@@ -37,7 +37,7 @@ Public Class frm_main
             If numupdown_build.Value = 0 Then
                 u_pack_name = tb_name.Text & "_" & DateTime.Now.Year.ToString() & "." & build_week
             Else
-                u_pack_name = tb_name.Text & "_" & DateTime.Now.Year.ToString() & "." & build_week & "." & numupdown_build.Value.ToString
+                u_pack_name = tb_name.Text & "_" & DateTime.Now.Year.ToString() & "." & build_week & "_U" & numupdown_build.Value.ToString
             End If
         End If
 
@@ -58,6 +58,11 @@ Public Class frm_main
         lbl_task.Text = "Copying app-files to update folder..."
         prog(40)
         DirectoryCopy(tb_path.Text, u_pack_path)
+
+        lbl_task.Text = "Generating version infos..."
+        prog(45)
+        ini.write_versionfile("BUILD", "version", u_pack_name.Replace(tb_name.Text & "_", ""), u_pack_path & "\build_info")
+        ini.write_versionfile("BUILD", "date", DateTime.Now.ToShortDateString & "_" & DateTime.Now.ToLongTimeString, u_pack_path & "\build_info")
 
         lbl_task.Text = "Cleanup app-files..."
         prog(60)
@@ -150,6 +155,7 @@ Public Class frm_main
         lbl_progress.Text = e & "%"
         lbl_progress.Width = e * 4.15
         Me.Refresh()
+        Threading.Thread.Sleep(100)
     End Sub
 
     Private Sub tb_name_TextChanged(sender As Object, e As EventArgs) Handles tb_name.TextChanged, rBtn_ver_normal.CheckedChanged, numupdown_build.ValueChanged
@@ -161,7 +167,7 @@ Public Class frm_main
             If numupdown_build.Value = 0 Then
                 lbl_packagename.Text = "ZIP-Name: " & tb_name.Text & "_" & DateTime.Now.Year & "." & build_week & ".zip"
             Else
-                lbl_packagename.Text = "ZIP-Name: " & tb_name.Text & "_" & DateTime.Now.Year & "." & build_week & "." & numupdown_build.Value.ToString & ".zip"
+                lbl_packagename.Text = "ZIP-Name: " & tb_name.Text & "_" & DateTime.Now.Year & "." & build_week & "_U" & numupdown_build.Value.ToString & ".zip"
             End If
         End If
     End Sub

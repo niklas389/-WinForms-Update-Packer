@@ -21,4 +21,13 @@
         'strFile = Vollständiger Pfad zur INI-Datei
         Return (Not (WritePrivateProfileString(strSection, strKey, strValue, ini_path) = 0))
     End Function
+
+    Public Function write_versionfile(ByVal strSection As String, ByVal strKey As String, ByVal strValue As String, ByVal strPath As String) As Boolean
+        'Funktion zum Schreiben
+        'strSection = Sektion in der INI-Datei
+        'strKey = Name des Schlüssels
+        'strValue = Wert, der geschrieben werden soll
+        'strFile = Vollständiger Pfad zur INI-Datei
+        Return (Not (WritePrivateProfileString(strSection, strKey, strValue, strPath) = 0))
+    End Function
 End Class
